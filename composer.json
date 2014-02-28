@@ -1,0 +1,21 @@
+{
+    "name": "masnathan/template",
+    "type": "library",
+    "description": "Lightweight Template class.",
+    "keywords": ["template"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "André Filipe",
+            "email": "andre.r.flip@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4"
+    },
+    "autoload": {
+        "psr-0": {
+            "MASNathan\\Tools\\": "src/"
+        }
+    }
+}
