@@ -1,0 +1,4 @@
+Template
+========
+
+Simple templating class
