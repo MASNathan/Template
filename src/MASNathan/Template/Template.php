@@ -49,6 +49,19 @@ class Template
 	 */
 	public function __toString()
 	{
+		try {
+			return $this->getContent();
+		} catch (\Exception $e) {
+			return '';
+		}
+	}
+
+	/**
+	 * Returns the generated content
+	 * @return string
+	 */
+	public function getContent()
+	{
 		if (empty($this->templateFileName)) {
 			throw new Exception\NoTemplateException("There is no main template setted");
 		}
