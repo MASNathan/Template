@@ -108,11 +108,13 @@ class Template
 	 * @param array $data
 	 * @return Template
 	 */
-	public function addFile($filename, array $data = array())
+	public function addFile($filename, array $data = array(), $alias = false)
 	{
-		$alias = explode('/', $filename);
-		$alias = end($alias);
-
+		if (!$alias) {
+			$alias = explode('/', $filename);
+			$alias = end($alias);
+		}
+		
 		$this->innerFiles[$alias] = $this->getFileContent($filename, $data);
 		return $this;
 	}
