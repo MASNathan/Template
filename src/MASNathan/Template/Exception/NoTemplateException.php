@@ -2,7 +2,4 @@
 
 namespace MASNathan\Template\Exception;
 
-class NoTemplateException extends \Exception
-{
-
-}
+class NoTemplateException extends \Exception {}

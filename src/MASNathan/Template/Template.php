@@ -14,120 +14,120 @@ namespace MASNathan\Template;
  */
 class Template
 {
-	/**
-	 * This var contains the path for the templates folder
-	 * @var string
-	 */
-	protected $root;
+    /**
+     * This var contains the path for the templates folder
+     * @var string
+     */
+    protected $root;
 
-	/**
-	 * Main template filename
-	 * @var string
-	 */
-	protected $templateFileName;
+    /**
+     * Main template filename
+     * @var string
+     */
+    protected $templateFileName;
 
-	/**
-	 * Hols all the files and vars setted via Template::addFile() and Template::addVar()
-	 * @var array
-	 */
-	protected $innerFiles = array();
+    /**
+     * Hols all the files and vars setted via Template::addFile() and Template::addVar()
+     * @var array
+     */
+    protected $innerFiles = array();
 
-	/**
-	 * Template class constructor
-	 * @param string $rootFolderPath Path for the template folder
-	 * @param string $templateFileName Main template name
-	 */
-	public function __construct($rootFolderPath, $templateFileName = '')
-	{
-		$this->root             = $rootFolderPath;
-		$this->templateFileName = $templateFileName;
-	}
+    /**
+     * Template class constructor
+     * @param string $rootFolderPath Path for the template folder
+     * @param string $templateFileName Main template name
+     */
+    public function __construct($rootFolderPath, $templateFileName = '')
+    {
+        $this->root             = $rootFolderPath;
+        $this->templateFileName = $templateFileName;
+    }
 
-	/**
-	 * Magic funtion to string, returns the generated content
-	 * @return string
-	 */
-	public function __toString()
-	{
-		try {
-			return $this->getContent();
-		} catch (\Exception $e) {
-			return '';
-		}
-	}
+    /**
+     * Magic funtion to string, returns the generated content
+     * @return string
+     */
+    public function __toString()
+    {
+        try {
+            return $this->getContent();
+        } catch (\Exception $e) {
+            return '';
+        }
+    }
 
-	/**
-	 * Returns the generated content
-	 * @return string
-	 */
-	public function getContent()
-	{
-		if (empty($this->templateFileName)) {
-			throw new Exception\NoTemplateException("There is no main template setted");
-		}
-		
-		return $this->getFileContent($this->templateFileName, $this->innerFiles);
-	}
+    /**
+     * Returns the generated content
+     * @return string
+     */
+    public function getContent()
+    {
+        if (empty($this->templateFileName)) {
+            throw new Exception\NoTemplateException("There is no main template setted");
+        }
+        
+        return $this->getFileContent($this->templateFileName, $this->innerFiles);
+    }
 
-	/**
-	 * Fetches a file content, extracting the $data contents
-	 * @param string $filename
-	 * @param array $data
-	 * @return string
-	 */
-	public function getFileContent($filename, array $data = array())
-	{
-		$filePath = $this->root . $filename . '.php';
-		if (!is_file($filePath)) {
-			throw new Exception\InvalidFileException("The file that you are trying to load \"$filename\" does not exist.");
-		}
+    /**
+     * Fetches a file content, extracting the $data contents
+     * @param string $filename
+     * @param array $data
+     * @return string
+     */
+    public function getFileContent($filename, array $data = array())
+    {
+        $filePath = $this->root . $filename . '.php';
+        if (!is_file($filePath)) {
+            throw new Exception\InvalidFileException("The file that you are trying to load \"$filename\" does not exist.");
+        }
 
-		//Lets put it out
-		ob_start();
+        //Lets put it out
+        ob_start();
 
-		extract($data);
-		include $filePath;
-		
-		return ob_get_clean();
-	}
+        extract($data);
+        include $filePath;
+        
+        return ob_get_clean();
+    }
 
-	/**
-	 * Setter for the main template
-	 * @param string $templateFileName
-	 * @return Template
-	 */
-	public function setTemplate($templateFileName)
-	{
-		$this->templateFileName = $templateFileName;
-		return $this;
-	}
+    /**
+     * Setter for the main template
+     * @param string $templateFileName
+     * @return Template
+     */
+    public function setTemplate($templateFileName)
+    {
+        $this->templateFileName = $templateFileName;
+        return $this;
+    }
 
-	/**
-	 * Adds a file to be loaded
-	 * @param string $filename
-	 * @param array $data
-	 * @return Template
-	 */
-	public function addFile($filename, array $data = array(), $alias = false)
-	{
-		if (!$alias) {
-			$alias = explode('/', $filename);
-			$alias = end($alias);
-		}
-		
-		$this->innerFiles[$alias] = $this->getFileContent($filename, $data);
-		return $this;
-	}
+    /**
+     * Adds a file to be loaded
+     * @param string $filename
+     * @param array $data
+     * @return Template
+     */
+    public function addFile($filename, array $data = array(), $alias = false)
+    {
+        if (!$alias) {
+            $alias = explode('/', $filename);
+            $alias = end($alias);
+        }
+        
+        $this->innerFiles[$alias] = $this->getFileContent($filename, $data);
+        return $this;
+    }
 
-	/**
-	 * Adds a variable to be loaded
-	 * @param string $filename
-	 * @param array $data
-	 * @return Template
-	 */
-	public function addVar($alias, $data)
-	{
-		$this->innerFiles[$alias] = $data;
-		return $this;
-	}
+    /**
+     * Adds a variable to be loaded
+     * @param string $filename
+     * @param array $data
+     * @return Template
+     */
+    public function addVar($alias, $data)
+    {
+        $this->innerFiles[$alias] = $data;
+        return $this;
+    }
 }
